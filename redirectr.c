@@ -1,6 +1,7 @@
 #include <arpa/inet.h>
 #include <poll.h>
 #include <signal.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -56,7 +57,7 @@ void handle_client(int client_socket) {
   char res[BUFFER_SIZE];
   int response_length = snprintf(res, sizeof(res), RESPONSE, redirect_url);
   printf("🌟 Redirige %s a %s\n", host, redirect_url);
-  write(client_socket, res, response_length);
+  write(client_socket, res, (size_t)response_length);
   close(client_socket);
 }
 
@@ -183,14 +184,14 @@ void parse_config(char *config) {
 
 int main(void) {
   char config_data[BUFFER_SIZE];
-  size_t bytes_read = read(STDIN_FILENO, config_data, BUFFER_SIZE - 1);
+  ssize_t bytes_read = read(STDIN_FILENO, config_data, BUFFER_SIZE - 1);
   if (bytes_read <= 0) {
     fprintf(stderr, "🚨 Error al leer la configuracion\n");
     return EXIT_FAILURE;
   }
   config_data[bytes_read] = '\0';
   parse_config(config_data);
-  struct sigaction sa = { .sa_handler = sigintHandler, .sa_flags = 0 };
+  struct sigaction sa = {.sa_handler = sigintHandler, .sa_flags = 0};
   sigemptyset(&sa.sa_mask);
   sigaction(SIGINT, &sa, NULL);
   sigaction(SIGTERM, &sa, NULL);

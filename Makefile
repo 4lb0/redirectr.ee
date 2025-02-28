@@ -5,8 +5,8 @@ SRCS := $(shell find . -name '*.c')
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 OBJ_DIRS := $(sort $(dir $(OBJS)))
 
-CFLAGS := -Wall -Wextra -pedantic -g
-LDFLAGS := -std=c23
+CFLAGS := -Wall -Wextra -pedantic -Wconversion -g
+LDFLAGS := -std=c23 -O2
 
 all: $(BUILD_DIR)/$(TARGET_EXEC)
 
