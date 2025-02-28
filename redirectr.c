@@ -164,7 +164,7 @@ void parse_config(char *config) {
     }
     strncpy(redirects[total_subdomains], url_start, url_len);
     redirects[total_subdomains][url_len] = '\0';
-    if (strcmp(subdomains[total_subdomains], "*") == 0) {
+    if (strcmp(subdomains[total_subdomains], DEFAULT_SUBDOMAIN) == 0) {
       strcpy(default_redirect, redirects[total_subdomains]);
     } else if (strcmp(subdomains[total_subdomains], "port") == 0) {
       config_port = atoi(redirects[total_subdomains]);
